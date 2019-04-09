@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mapbox-gl/0.53.1/mapbox-gl.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mapbox-gl/0.53.1/mapbox-gl.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<style>
+    #schwarzplan {
+        height: 800px; 
+        max-height: 75vh;
+        width: 100%;
+    }
+    .marker {
+        background-color: red;
+        width: 5px;
+        height: 5px;
+        border-radius: 10%;
+        cursor: pointer;
+    }
+
+</style>
+
+<div id="schwarzplan"></div>
+
+<script>
+var bouraky = [{'ulice': 'Mírová',
+  'cislo': 1244,
+  'majitel': 'Residomo',
+  'x': 18.530761416158768,
+  'y': 49.86470872697612},
+ {'ulice': 'Mírová',
+  'cislo': 1245,
+  'majitel': 'Residomo',
+  'x': 18.530583338689137,
+  'y': 49.864673792520804},
+ {'ulice': 'Mírová',
+  'cislo': 1246,
+  'majitel': 'Residomo',
+  'x': 18.53038594617279,
+  'y': 49.86463602361137},
+ {'ulice': 'Mírová',
+  'cislo': 1247,
+  'majitel': 'Residomo',
+  'x': 18.53021248734526,
+  'y': 49.86460864166309},
+ {'ulice': 'Mírová',
+  'cislo': 1436,
+  'majitel': 'Residomo',
+  'x': 18.531514354327864,
+  'y': 49.86503753756342},
+ {'ulice': 'Mírová',
+  'cislo': 1437,
+  'majitel': 'Residomo',
+  'x': 18.531567773669355,
+  'y': 49.86486060271819},
+ {'ulice': 'Mírová',
+  'cislo': 1438,
+  'majitel': 'Residomo',
+  'x': 18.53131081596717,
+  'y': 49.86480513621307},
+ {'ulice': 'Mírová',
+  'cislo': 1439,
+  'majitel': 'Residomo',
+  'x': 18.53109377680217,
+  'y': 49.86476821535669},
+ {'ulice': 'Mládežnická',
+  'cislo': 1259,
+  'majitel': 'Residomo',
+  'x': 18.531104311724093,
+  'y': 49.8643860275336},
+ {'ulice': 'Mládežnická',
+  'cislo': 1260,
+  'majitel': 'Residomo',
+  'x': 18.531162527810537,
+  'y': 49.86425571510043},
+ {'ulice': 'Mládežnická',
+  'cislo': 1261,
+  'majitel': 'Residomo',
+  'x': 18.531210176060853,
+  'y': 49.86414369248634},
+ {'ulice': 'Mládežnická',
+  'cislo': 1262,
+  'majitel': 'Residomo',
+  'x': 18.53126092080092,
+  'y': 49.864023806516364},
+ {'ulice': 'Mládežnická',
+  'cislo': 1263,
+  'majitel': 'Residomo',
+  'x': 18.531316006469165,
+  'y': 49.86390270867504},
+ {'ulice': 'Mládežnická',
+  'cislo': 1264,
+  'majitel': 'Residomo',
+  'x': 18.53136173498277,
+  'y': 49.86378932075595},
+ {'ulice': 'V Nádvoří',
+  'cislo': 1265,
+  'majitel': 'Residomo',
+  'x': 18.531851882453175,
+  'y': 49.86426143908093},
+ {'ulice': 'V Nádvoří',
+  'cislo': 1266,
+  'majitel': 'Residomo',
+  'x': 18.531902454260436,
+  'y': 49.86414289681081},
+ {'ulice': 'V Nádvoří',
+  'cislo': 1267,
+  'majitel': 'Residomo',
+  'x': 18.531952727166168,
+  'y': 49.864025601491335},
+ {'ulice': 'V Nádvoří',
+  'cislo': 1268,
+  'majitel': 'Residomo',
+  'x': 18.532012472384366,
+  'y': 49.86390078272549},
+ {'ulice': 'Havířská',
+  'cislo': 1288,
+  'majitel': 'Residomo',
+  'x': 18.53275244231379,
+  'y': 49.86372193015841},
+ {'ulice': 'Havířská',
+  'cislo': 1289,
+  'majitel': 'Residomo',
+  'x': 18.532564920289364,
+  'y': 49.863687757989844},
+ {'ulice': 'Havířská',
+  'cislo': 1290,
+  'majitel': 'Residomo',
+  'x': 18.532364709518774,
+  'y': 49.86365678795834},
+ {'ulice': 'Havířská',
+  'cislo': 1291,
+  'majitel': 'Residomo',
+  'x': 18.53189873056031,
+  'y': 49.86356726626264},
+ {'ulice': 'Havířská',
+  'cislo': 1292,
+  'majitel': 'Residomo',
+  'x': 18.531715710897313,
+  'y': 49.86353062650064},
+ {'ulice': 'Havířská',
+  'cislo': 1293,
+  'majitel': 'Residomo',
+  'x': 18.531522155835482,
+  'y': 49.863501092320256},
+ {'ulice': 'Květinová',
+  'cislo': 1269,
+  'majitel': 'Residomo',
+  'x': 18.53238453108922,
+  'y': 49.8646280229307},
+ {'ulice': 'Květinová',
+  'cislo': 1270,
+  'majitel': 'Residomo',
+  'x': 18.532435069061858,
+  'y': 49.864493331617716},
+ {'ulice': 'Květinová',
+  'cislo': 1271,
+  'majitel': 'Residomo',
+  'x': 18.532493967696652,
+  'y': 49.86437514287055},
+ {'ulice': 'Květinová',
+  'cislo': 1272,
+  'majitel': 'Residomo',
+  'x': 18.532548696343564,
+  'y': 49.8642568220105},
+ {'ulice': 'Květinová',
+  'cislo': 1273,
+  'majitel': 'Residomo',
+  'x': 18.532588024899592,
+  'y': 49.864144355496386},
+ {'ulice': 'Květinová',
+  'cislo': 1274,
+  'majitel': 'Residomo',
+  'x': 18.532643267459946,
+  'y': 49.86402200268075},
+ {'ulice': 'Mírová',
+  'cislo': 1255,
+  'majitel': 'Residomo',
+  'x': 18.532009867870446,
+  'y': 49.864608048860894},
+ {'ulice': 'Mírová',
+  'cislo': 1256,
+  'majitel': 'Residomo',
+  'x': 18.53181450795832,
+  'y': 49.86457075158814},
+ {'ulice': 'Mírová',
+  'cislo': 1257,
+  'majitel': 'Residomo',
+  'x': 18.531643284958832,
+  'y': 49.86454006310894},
+ {'ulice': 'Mírová',
+  'cislo': 1258,
+  'majitel': 'Residomo',
+  'x': 18.531456686658974,
+  'y': 49.86449863178176},
+ {'ulice': 'Letní',
+  'cislo': 1275,
+  'majitel': 'Residomo',
+  'x': 18.53472272945011,
+  'y': 49.86503950773885},
+ {'ulice': 'Letní',
+  'cislo': 1276,
+  'majitel': 'Residomo',
+  'x': 18.534777103213457,
+  'y': 49.86491846102139},
+ {'ulice': 'Letní',
+  'cislo': 1277,
+  'majitel': 'Residomo',
+  'x': 18.534825135339943,
+  'y': 49.86480555579413},
+ {'ulice': 'Letní',
+  'cislo': 1278,
+  'majitel': 'Residomo',
+  'x': 18.534876452192297,
+  'y': 49.86468768380015},
+ {'ulice': 'Letní',
+  'cislo': 1279,
+  'majitel': 'Residomo',
+  'x': 18.534925557998857,
+  'y': 49.86456635631173},
+ {'ulice': 'Letní',
+  'cislo': 1280,
+  'majitel': 'Residomo',
+  'x': 18.534979496528834,
+  'y': 49.864448714200165},
+ {'ulice': 'Javorová',
+  'cislo': 1281,
+  'majitel': 'Residomo',
+  'x': 18.534180335181745,
+  'y': 49.864682429358574},
+ {'ulice': 'Javorová',
+  'cislo': 1282,
+  'majitel': 'Residomo',
+  'x': 18.5342332913278,
+  'y': 49.86457141044779},
+ {'ulice': 'Javorová',
+  'cislo': 1283,
+  'majitel': 'Residomo',
+  'x': 18.53428893430237,
+  'y': 49.86444041855857},
+ {'ulice': 'Javorová',
+  'cislo': 1284,
+  'majitel': 'Residomo',
+  'x': 18.534339612103253,
+  'y': 49.86432756425982},
+ {'ulice': 'Havířská',
+  'cislo': 1081,
+  'majitel': 'Residomo',
+  'x': 18.53423725074636,
+  'y': 49.86399222199619},
+ {'ulice': 'Havířská',
+  'cislo': 1082,
+  'majitel': 'Residomo',
+  'x': 18.534055040980217,
+  'y': 49.86395905709777},
+ {'ulice': 'Havířská',
+  'cislo': 1083,
+  'majitel': 'Residomo',
+  'x': 18.53385175593952,
+  'y': 49.863928106280234},
+ {'ulice': 'Havířská',
+  'cislo': 1285,
+  'majitel': 'Residomo',
+  'x': 18.53508469997019,
+  'y': 49.864151225106625},
+ {'ulice': 'Havířská',
+  'cislo': 1286,
+  'majitel': 'Residomo',
+  'x': 18.534887731918385,
+  'y': 49.86411231374494},
+ {'ulice': 'Havířská',
+  'cislo': 1287,
+  'majitel': 'Residomo',
+  'x': 18.53470331051103,
+  'y': 49.86407569438736},
+ {'ulice': 'Mírová',
+  'cislo': 1193,
+  'majitel': 'Residomo',
+  'x': 18.534342265578548,
+  'y': 49.865037634428596},
+ {'ulice': 'Mírová',
+  'cislo': 1194,
+  'majitel': 'Residomo',
+  'x': 18.534154990335953,
+  'y': 49.86500257624239},
+ {'ulice': 'Mírová',
+  'cislo': 1195,
+  'majitel': 'Residomo',
+  'x': 18.533957469545324,
+  'y': 49.864966881483234},
+ {'ulice': 'Mírová',
+  'cislo': 1196,
+  'majitel': 'Residomo',
+  'x': 18.533780384963308,
+  'y': 49.864933989522655},
+ {'ulice': 'Lipová',
+  'cislo': 1197,
+  'majitel': 'Residomo',
+  'x': 18.533433918670852,
+  'y': 49.86480673330038},
+ {'ulice': 'Lipová',
+  'cislo': 1198,
+  'majitel': 'Residomo',
+  'x': 18.533490573186924,
+  'y': 49.86468752250099},
+ {'ulice': 'Lipová',
+  'cislo': 1199,
+  'majitel': 'Residomo',
+  'x': 18.533541893122948,
+  'y': 49.86456965107353},
+ {'ulice': 'Lipová',
+  'cislo': 1200,
+  'majitel': 'Residomo',
+  'x': 18.533595490635307,
+  'y': 49.864453614960276},
+ {'ulice': 'Lipová',
+  'cislo': 1201,
+  'majitel': 'Residomo',
+  'x': 18.53363981516036,
+  'y': 49.864330409258834},
+ {'ulice': 'Lipová',
+  'cislo': 1202,
+  'majitel': 'Residomo',
+  'x': 18.533696251482972,
+  'y': 49.864212900696394}] 
+
+  // mapa
+var map = new mapboxgl.Map({
+  container: "schwarzplan",
+  style: "https://data.irozhlas.cz/mapa-domu/map_styl/style.json",
+  zoom: 12,
+  maxZoom: 15,
+  pitch: 0,
+  attributionControl: false,
+  // center: [15.3350758, 49.7417517],
+  center: [18.5416897, 49.8540031] // Karviná
+
+});
+map.addControl(new mapboxgl.AttributionControl({
+  compact: true,
+  customAttribution: "obrazový podkres <a target=\"_blank\" href=\"https://samizdat.cz\">Samizdat</a>, data <a target=\"_blank\" href=\"http://vdp.cuzk.cz/\">ČÚZK</a>"
+}));
+map.scrollZoom.disable(); // zoom myší teprve až po interakci s mapou
+
+map.on("click", function (e) {
+  map.scrollZoom.enable();
+});
+
+map.addControl(new mapboxgl.NavigationControl(), "top-left"); // buttonky pro zoom a rotaci
+
+map.on("load", function () {
+  map.addLayer({
+    // pridat vrstvu domu
+    id: "barakygeojson",
+    type: "fill",
+    source: {
+      type: "vector",
+      tiles: ["https://data.irozhlas.cz/mapa-domu/tiles/{z}/{x}/{y}.pbf"]
+    },
+    "source-layer": "barakygeojson",
+    paint: {
+      // "fill-color": "black",
+      "fill-opacity": ["interpolate", ["linear"], ["zoom"], 10, 0.5, 10.1, 1],
+      "fill-outline-color": "hsl(0, 0%, 52%)"
+    }
+  });
+  map.addLayer({
+    id: "labels",
+    source: {
+      tiles: ["https://interaktivni.rozhlas.cz/tiles/ton_l2/{z}/{x}/{y}.png"],
+      type: "raster",
+      tileSize: 256
+    },
+    type: "raster"
+  });
+
+  if (window.location.href.includes("latlng")) {
+    //posunuti mapy dle url
+    var ll = window.location.href.split("latlng=")[1].split('&')[0];
+    map.setCenter([parseFloat(ll.split('|')[1]), parseFloat(ll.split('|')[0])]);
+    map.setZoom(parseInt(ll.split('|')[2]));
+  }
+
+  ;
+});
+map.on('moveend', function (e) {
+  // poloha do url pro sdileni
+  var cen = map.getCenter().wrap();
+  window.history.pushState('', '', window.location.pathname + '?latlng=' + cen.lat + '|' + cen.lng + '|' + map.getZoom());
+});
+
+//naprat bouraky
+bouraky.forEach(function(b) {
+    var el = document.createElement('div');
+    el.className = 'marker';
+    new mapboxgl.Marker(el)
+        .setLngLat([b.x, b.y])
+        .addTo(map);
+        console.log(b)
+    })
+
+</script>
